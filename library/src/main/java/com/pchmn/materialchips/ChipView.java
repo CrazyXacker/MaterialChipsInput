@@ -127,12 +127,17 @@ public class ChipView extends RelativeLayout {
         setDeletable(mDeletable);
 
         // background color
-        if (mChip != null && mChip.isInverted() && mInvertedBackgroundColor != null) {
-            setChipInvertedBackgroundColor(mInvertedBackgroundColor);
-        } else if (mBackgroundColor != null) {
+        if (mBackgroundColor != null) {
             setChipBackgroundColor(mBackgroundColor);
         }
 
+        if (mInvertedBackgroundColor != null) {
+            setChipInvertedBackgroundColor(mInvertedBackgroundColor);
+        }
+
+        if (mChip != null && mChip.isInverted() && mInvertedBackgroundColor != null) {
+            setCurrentChipBackgroundColor(mInvertedBackgroundColor);
+        }
     }
 
     public void inflate(ChipInterface chip) {
