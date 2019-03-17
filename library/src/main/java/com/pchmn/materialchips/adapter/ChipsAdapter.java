@@ -184,8 +184,8 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 params.width = right - left - ViewUtil.dpToPx(8);
                 mEditText.setLayoutParams(params);
 
-                // request focus
-                mEditText.requestFocus();
+//                // request focus
+//                mEditText.requestFocus();
 
                 // remove the listener:
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
