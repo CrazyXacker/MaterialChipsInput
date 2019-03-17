@@ -7,11 +7,11 @@ import android.net.Uri;
 import com.pchmn.materialchips.model.ChipInterface;
 
 public class ContactChip implements ChipInterface {
-
     private String id;
     private Uri avatarUri;
     private String name;
     private String phoneNumber;
+    private boolean isInverted;
 
     public ContactChip(String id, Uri avatarUri, String name, String phoneNumber) {
         this.id = id;
@@ -43,5 +43,15 @@ public class ContactChip implements ChipInterface {
     @Override
     public String getInfo() {
         return phoneNumber;
+    }
+
+    @Override
+    public boolean isInverted() {
+        return isInverted;
+    }
+
+    @Override
+    public void setInverted(boolean isInverted) {
+        this.isInverted = isInverted;
     }
 }

@@ -69,17 +69,13 @@ public class ContactListActivity extends AppCompatActivity {
         });
 
         // show selected chips
-        mValidateButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                String listString = "";
-                for(ContactChip chip: (List<ContactChip>)  mChipsInput.getSelectedChipList()) {
-                    listString += chip.getLabel() + " (" + (chip.getInfo() != null ? chip.getInfo(): "") + ")" + ", ";
-                }
-
-                mChipListText.setText(listString);
+        mValidateButton.setOnClickListener(v -> {
+            String listString = "";
+            for(ContactChip chip: (List<ContactChip>)  mChipsInput.getSelectedChipList()) {
+                listString += chip.getLabel() + " (" + (chip.getInfo() != null ? chip.getInfo(): "") + ")" + ", ";
             }
+
+            mChipListText.setText(listString);
         });
     }
 

@@ -82,6 +82,7 @@
                 app:label="Chip 5"
                 app:labelColor="@color/colorPrimary"
                 app:backgroundColor="@android:color/holo_blue_light"
+                app:invertedBackgroundColor="@color/colorPrimary"
                 app:deletable="true"
                 app:deleteIconColor="@color/colorPrimary"/>
 

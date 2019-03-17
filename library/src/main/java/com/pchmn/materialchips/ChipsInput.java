@@ -1,6 +1,5 @@
 package com.pchmn.materialchips;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -11,7 +10,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.EditText;
 
 import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager;
 import com.pchmn.materialchips.adapter.ChipsAdapter;
@@ -32,7 +30,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ChipsInput extends ScrollViewMaxHeight {
-
     private static final String TAG = ChipsInput.class.toString();
     // context
     private Context mContext;
@@ -52,7 +49,9 @@ public class ChipsInput extends ScrollViewMaxHeight {
     private Drawable mChipDeleteIcon;
     private ColorStateList mChipDeleteIconColor;
     private ColorStateList mChipBackgroundColor;
+    private ColorStateList mChipInvertedBackgroundColor;
     private boolean mShowChipDetailed = true;
+    private boolean mChipCanInvert = false;
     private ColorStateList mChipDetailedTextColor;
     private ColorStateList mChipDetailedDeleteIconColor;
     private ColorStateList mChipDetailedBackgroundColor;
@@ -116,8 +115,11 @@ public class ChipsInput extends ScrollViewMaxHeight {
                 if(deleteIconId != NONE) mChipDeleteIcon = ContextCompat.getDrawable(mContext, deleteIconId);
                 // chip background color
                 mChipBackgroundColor = a.getColorStateList(R.styleable.ChipsInput_chip_backgroundColor);
+                mChipInvertedBackgroundColor = a.getColorStateList(R.styleable.ChipsInput_chip_invertedBackgroundColor);
                 // show chip detailed
                 mShowChipDetailed = a.getBoolean(R.styleable.ChipsInput_showChipDetailed, true);
+                // chip can invert
+                mChipCanInvert = a.getBoolean(R.styleable.ChipsInput_chipCanInvert, false);
                 // chip detailed text color
                 mChipDetailedTextColor = a.getColorStateList(R.styleable.ChipsInput_chip_detailed_textColor);
                 mChipDetailedBackgroundColor = a.getColorStateList(R.styleable.ChipsInput_chip_detailed_backgroundColor);
@@ -204,6 +206,7 @@ public class ChipsInput extends ScrollViewMaxHeight {
                 .deleteIcon(mChipDeleteIcon)
                 .deleteIconColor(mChipDeleteIconColor)
                 .backgroundColor(mChipBackgroundColor)
+                .invertedBackgroundColor(mChipInvertedBackgroundColor)
                 .build();
 
         chipView.setPadding(padding, padding, padding, padding);
@@ -263,7 +266,11 @@ public class ChipsInput extends ScrollViewMaxHeight {
     }
 
     public List<? extends ChipInterface> getSelectedChipList() {
-        return mChipsAdapter.getChipList();
+        return mChipsAdapter.getSelectedChipList();
+    }
+
+    public List<? extends ChipInterface> getInvertedChipList() {
+        return mChipsAdapter.getInvertedChipList();
     }
 
     public String getHint() {
@@ -315,6 +322,10 @@ public class ChipsInput extends ScrollViewMaxHeight {
         this.mChipBackgroundColor = mBackgroundColor;
     }
 
+    public void setChipInvertedBackgroundColor(ColorStateList mInvertedBackgroundColor) {
+        this.mChipInvertedBackgroundColor = mInvertedBackgroundColor;
+    }
+
     public ChipsInput setShowChipDetailed(boolean mShowChipDetailed) {
         this.mShowChipDetailed = mShowChipDetailed;
         return this;
@@ -322,6 +333,15 @@ public class ChipsInput extends ScrollViewMaxHeight {
 
     public boolean isShowChipDetailed() {
         return mShowChipDetailed;
+    }
+
+    public ChipsInput setChipCanInvert(boolean mChipCanInvert) {
+        this.mChipCanInvert = mChipCanInvert;
+        return this;
+    }
+
+    public boolean isChipCanInvert() {
+        return mChipCanInvert;
     }
 
     public void setChipDetailedTextColor(ColorStateList mChipDetailedTextColor) {

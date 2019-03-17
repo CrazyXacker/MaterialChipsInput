@@ -13,6 +13,7 @@ public class Chip implements ChipInterface {
     private Drawable avatarDrawable;
     private String label;
     private String info;
+    private boolean isInverted = false;
 
     public Chip(@NonNull Object id, @Nullable Uri avatarUri, @NonNull String label, @Nullable String info) {
         this.id = id;
@@ -74,5 +75,15 @@ public class Chip implements ChipInterface {
     @Override
     public String getInfo() {
         return info;
+    }
+
+    @Override
+    public boolean isInverted() {
+        return isInverted;
+    }
+
+    @Override
+    public void setInverted(boolean isInverted) {
+        this.isInverted = isInverted;
     }
 }

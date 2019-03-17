@@ -2,6 +2,7 @@ package com.pchmn.materialchips.adapter;
 
 import android.content.Context;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputType;
@@ -17,6 +18,7 @@ import android.widget.RelativeLayout;
 
 import com.pchmn.materialchips.ChipView;
 import com.pchmn.materialchips.ChipsInput;
+import com.pchmn.materialchips.R;
 import com.pchmn.materialchips.model.ChipInterface;
 import com.pchmn.materialchips.views.ChipsInputEditText;
 import com.pchmn.materialchips.views.DetailedChipView;
@@ -28,9 +30,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-
 public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
     private static final String TAG = ChipsAdapter.class.toString();
     private static final int TYPE_EDIT_TEXT = 0;
     private static final int TYPE_ITEM = 1;
@@ -88,9 +88,7 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
             // auto fit edit text
             autofitEditText();
-        }
-        // chip
-        else if(getItemCount() > 1) {
+        } else if(getItemCount() > 1) { // chip
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
             itemViewHolder.chipView.inflate(getItem(position));
             // handle click
@@ -200,7 +198,7 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         });
     }
 
-    private void handleClickOnEditText(ChipView chipView, final int position) {
+    private void handleClickOnEditText(final ChipView chipView, final int position) {
         // delete chip
         chipView.setOnDeleteClicked(new View.OnClickListener() {
             @Override
@@ -209,7 +207,6 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             }
         });
 
-        // show detailed chip
         if(mChipsInput.isShowChipDetailed()) {
             chipView.setOnChipClicked(new View.OnClickListener() {
                 @Override
@@ -229,6 +226,19 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                             detailedChipView.fadeOut();
                         }
                     });
+                }
+            });
+        }
+
+        // show detailed chip
+        if(mChipsInput.isChipCanInvert()) {
+            chipView.setOnChipLongClicked(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    ChipInterface chip = getItem(position);
+                    chip.setInverted(!chip.isInverted());
+                    chipView.setCurrentChipBackgroundColor(chip.isInverted() ? chipView.getChipInvertedBackgroundColor() : chipView.getChipBackgroundColor());
+                    return false;
                 }
             });
         }
@@ -365,8 +375,24 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    public List<ChipInterface> getChipList() {
-        return mChipList;
+    public List<ChipInterface> getSelectedChipList() {
+        List<ChipInterface> list = new ArrayList<>();
+        for (ChipInterface chipInterface : mChipList) {
+            if (!chipInterface.isInverted()) {
+                list.add(chipInterface);
+            }
+        }
+        return list;
+    }
+
+    public List<ChipInterface> getInvertedChipList() {
+        List<ChipInterface> list = new ArrayList<>();
+        for (ChipInterface chipInterface : mChipList) {
+            if (chipInterface.isInverted()) {
+                list.add(chipInterface);
+            }
+        }
+        return list;
     }
 
     private boolean listContains(List<ChipInterface> contactList, ChipInterface chip) {

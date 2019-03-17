@@ -9,6 +9,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.pchmn.materialchips.ChipView;
+import com.pchmn.materialchips.adapter.ChipsAdapter;
+import com.pchmn.materialchips.model.ChipInterface;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +37,14 @@ public class ChipExamplesActivity extends AppCompatActivity {
         // chip 1
         mChip1.setOnChipClicked(view -> {
             Toast.makeText(ChipExamplesActivity.this, mChip1.getLabel() + ": clicked", Toast.LENGTH_SHORT).show();
+        });
+        mChip1.setOnChipLongClicked(view -> {
+            ChipInterface chip = mChip1.getChipInterface();
+            chip.setInverted(!chip.isInverted());
+            mChip1.setCurrentChipBackgroundColor(chip.isInverted() ? mChip1.getChipInvertedBackgroundColor() : mChip1.getChipBackgroundColor());
+
+            Toast.makeText(ChipExamplesActivity.this, mChip1.getLabel() + ": long clicked", Toast.LENGTH_SHORT).show();
+            return true;
         });
         mChip1.setOnDeleteClicked(view -> {
             Toast.makeText(ChipExamplesActivity.this, mChip1.getLabel() + ": delete clicked", Toast.LENGTH_SHORT).show();

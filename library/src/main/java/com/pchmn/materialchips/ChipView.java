@@ -27,7 +27,6 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChipView extends RelativeLayout {
-
     private static final String TAG = ChipView.class.toString();
     // context
     private Context mContext;
@@ -47,6 +46,7 @@ public class ChipView extends RelativeLayout {
     private Drawable mDeleteIcon;
     private ColorStateList mDeleteIconColor;
     private ColorStateList mBackgroundColor;
+    private ColorStateList mInvertedBackgroundColor;
     // letter tile provider
     private LetterTileProvider mLetterTileProvider;
     // chip
@@ -100,6 +100,7 @@ public class ChipView extends RelativeLayout {
                 if(deleteIconId != NONE) mDeleteIcon = ContextCompat.getDrawable(mContext, deleteIconId);
                 // background color
                 mBackgroundColor = a.getColorStateList(R.styleable.ChipView_backgroundColor);
+                mInvertedBackgroundColor = a.getColorStateList(R.styleable.ChipView_invertedBackgroundColor);
             }
             finally {
                 a.recycle();
@@ -128,6 +129,8 @@ public class ChipView extends RelativeLayout {
         // background color
         if(mBackgroundColor != null)
             setChipBackgroundColor(mBackgroundColor);
+        if(mInvertedBackgroundColor != null)
+            setChipInvertedBackgroundColor(mInvertedBackgroundColor);
     }
 
     public void inflate(ChipInterface chip) {
@@ -306,6 +309,10 @@ public class ChipView extends RelativeLayout {
         inflateWithAttributes();
     }
 
+    public void setCurrentChipBackgroundColor(ColorStateList color) {
+        mContentLayout.getBackground().setColorFilter(color.getDefaultColor(), PorterDuff.Mode.SRC_ATOP);
+    }
+
     /**
      * Set background color
      *
@@ -324,6 +331,22 @@ public class ChipView extends RelativeLayout {
     public void setChipBackgroundColor(@ColorInt int color) {
         mBackgroundColor = ColorStateList.valueOf(color);
         mContentLayout.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+    }
+
+    public ColorStateList getChipBackgroundColor() {
+        return mBackgroundColor;
+    }
+
+    public void setChipInvertedBackgroundColor(ColorStateList color) {
+        mInvertedBackgroundColor = color;
+    }
+
+    public void setChipInvertedBackgroundColor(@ColorInt int color) {
+        mInvertedBackgroundColor = ColorStateList.valueOf(color);
+    }
+
+    public ColorStateList getChipInvertedBackgroundColor() {
+        return mInvertedBackgroundColor;
     }
 
     /**
@@ -353,6 +376,14 @@ public class ChipView extends RelativeLayout {
         mContentLayout.setOnClickListener(onClickListener);
     }
 
+    public void setOnChipLongClicked(OnLongClickListener onLongClickListener) {
+        mContentLayout.setOnLongClickListener(onLongClickListener);
+    }
+
+    public ChipInterface getChipInterface() {
+        return mChip;
+    }
+
     /**
      * Builder class
      */
@@ -367,6 +398,7 @@ public class ChipView extends RelativeLayout {
         private Drawable deleteIcon;
         private ColorStateList deleteIconColor;
         private ColorStateList backgroundColor;
+        private ColorStateList invertedBackgroundColor;
         private ChipInterface chip;
 
         public Builder(Context context) {
@@ -418,6 +450,11 @@ public class ChipView extends RelativeLayout {
             return this;
         }
 
+        public Builder invertedBackgroundColor(ColorStateList invertedBackgroundColor) {
+            this.invertedBackgroundColor = invertedBackgroundColor;
+            return this;
+        }
+
         public Builder chip(ChipInterface chip) {
             this.chip = chip;
             this.label = chip.getLabel();
@@ -442,6 +479,7 @@ public class ChipView extends RelativeLayout {
         chipView.mDeleteIcon = builder.deleteIcon;
         chipView.mDeleteIconColor = builder.deleteIconColor;
         chipView.mBackgroundColor = builder.backgroundColor;
+        chipView.mInvertedBackgroundColor = builder.invertedBackgroundColor;
         chipView.mChip = builder.chip;
         chipView.inflateWithAttributes();
 
