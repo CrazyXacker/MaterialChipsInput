@@ -13,8 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.pchmn.materialchips.ChipView;
 import com.pchmn.materialchips.ChipsInput;
@@ -169,6 +171,7 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         ViewGroup.LayoutParams params = mEditText.getLayoutParams();
         params.width = ViewUtil.dpToPx(50);
         mEditText.setLayoutParams(params);
+        mEditText.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
         // listen to change in the tree
         mEditText.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -195,6 +198,19 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 }
             }
 
+        });
+
+        mEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_NEXT) {
+                    mEditText.setImeOptions(EditorInfo.IME_ACTION_DONE);
+                    mEditText.clearFocus();
+                    mChipsInput.clearFocus();
+                    mRecycler.clearFocus();
+                }
+                return false;
+            }
         });
     }
 
