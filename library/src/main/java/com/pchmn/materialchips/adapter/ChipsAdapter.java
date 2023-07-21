@@ -1,6 +1,7 @@
 package com.pchmn.materialchips.adapter;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -42,6 +43,8 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private String mHintLabel;
     private ChipsInputEditText mEditText;
     private RecyclerView mRecycler;
+
+    private boolean mIsKeyboardVisible;
 
     public ChipsAdapter(Context context, ChipsInput chipsInput, RecyclerView recycler) {
         mContext = context;
@@ -187,8 +190,8 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 params.width = right - left - ViewUtil.dpToPx(8);
                 mEditText.setLayoutParams(params);
 
-//                // request focus
-//                mEditText.requestFocus();
+                // request focus
+                mEditText.requestFocus();
 
                 // remove the listener:
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
@@ -206,8 +209,6 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_NEXT) {
                     mEditText.setImeOptions(EditorInfo.IME_ACTION_DONE);
                     mEditText.clearFocus();
-                    mChipsInput.clearFocus();
-                    mRecycler.clearFocus();
                 }
                 return false;
             }
